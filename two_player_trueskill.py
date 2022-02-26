@@ -16,7 +16,12 @@ from trueskill_types import Rating
 def update_one_player(
         p1_rating: Rating, p2_rating: Rating, outcome: int) -> Rating:
     draw_margin = compute_draw_margin()
-    c = sqrt(p1_rating.stddev**2 + p2_rating.stddev**2 + 2*SKILL_CLASS_WIDTH)
+    player_count = 2
+    c = sqrt(
+        p1_rating.stddev**2
+        + p2_rating.stddev**2
+        + player_count*SKILL_CLASS_WIDTH
+    )
     winning_mean = p1_rating.mean if outcome >= 0 else p2_rating.mean
     losing_mean = p2_rating.mean if outcome >= 0 else p1_rating.mean
     perf_diff = winning_mean - losing_mean
