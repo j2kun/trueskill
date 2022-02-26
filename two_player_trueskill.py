@@ -1,27 +1,20 @@
 '''A bare-bones implementation of two-player TrueSkill.'''
 
-from dataclasses import dataclass
 from math import sqrt
 from typing import Tuple
 
 from constants import ADDITIVE_DYNAMICS_FACTOR
-from constants import DEFAULT_MEAN
-from constants import DEFAULT_STD_DEV
 from constants import SKILL_CLASS_WIDTH
 from trueskill_math import compute_draw_margin
 from trueskill_math import truncated_onesided_gaussian_v
 from trueskill_math import truncated_onesided_gaussian_w
 from trueskill_math import truncated_twosided_gaussian_v
 from trueskill_math import truncated_twosided_gaussian_w
+from trueskill_types import Rating
 
 
-@dataclass(frozen=True)
-class Rating:
-    mean: float = DEFAULT_MEAN
-    stddev: float = DEFAULT_STD_DEV
-
-
-def update_one_player(p1_rating, p2_rating, outcome):
+def update_one_player(
+        p1_rating: Rating, p2_rating: Rating, outcome: int) -> Rating:
     draw_margin = compute_draw_margin()
     c = sqrt(p1_rating.stddev**2 + p2_rating.stddev**2 + 2*SKILL_CLASS_WIDTH)
     winning_mean = p1_rating.mean if outcome >= 0 else p2_rating.mean

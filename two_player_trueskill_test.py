@@ -1,6 +1,6 @@
 '''Tests for two_player_trueskill.py'''
 
-from two_player_trueskill import Rating
+from trueskill_types import Rating
 from two_player_trueskill import update_ratings
 
 
