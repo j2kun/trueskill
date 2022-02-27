@@ -37,7 +37,8 @@ def update_one_team(
     if outcome == 0:
         v = truncated_twosided_gaussian_v(
             perf_diff / c, -draw_margin / c, draw_margin / c)
-        w = truncated_twosided_gaussian_w(perf_diff / c, draw_margin / c)
+        w = truncated_twosided_gaussian_w(
+            perf_diff / c, -draw_margin / c, draw_margin / c)
         mean_adjustment_direction = 1
     else:
         v = truncated_onesided_gaussian_v(perf_diff / c, draw_margin / c)

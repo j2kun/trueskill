@@ -74,23 +74,19 @@ def truncated_twosided_gaussian_v(t, lower, upper):
     ) / normalization
 
 
-def truncated_twosided_gaussian_w(perf_diff, draw_margin):
+def truncated_twosided_gaussian_w(t, lower, upper):
     '''Equation 4.4 from Herbrich '05, On Gaussian Expectation Propagation.
 
     Representing the additive correction factor to the variance of a rectified
     Gaussian that is truncated on both sides.
     '''
-    abs_diff = abs(perf_diff)
     normalization = (
-        STANDARD_NORMAL.cdf(draw_margin - abs_diff) -
-        STANDARD_NORMAL.cdf(-draw_margin - abs_diff)
+        STANDARD_NORMAL.cdf(upper - t) - STANDARD_NORMAL.cdf(lower - t)
     )
     if normalization < TOLERANCE:
         return 1
 
-    v_value = truncated_twosided_gaussian_v(
-        perf_diff, -draw_margin, draw_margin)
-    t1 = (draw_margin - abs_diff) * STANDARD_NORMAL.pdf(draw_margin - abs_diff)
-    t2 = (-draw_margin - abs_diff) * \
-        STANDARD_NORMAL.pdf(-draw_margin - abs_diff)
-    return v_value ** 2 + (t1 - t2) / normalization
+    v = truncated_twosided_gaussian_v(t, lower, upper)
+    t1 = (upper - t) * STANDARD_NORMAL.pdf(upper - t)
+    t2 = (lower - t) * STANDARD_NORMAL.pdf(lower - t)
+    return v**2 + (t1 - t2) / normalization
